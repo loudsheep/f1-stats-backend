@@ -25,7 +25,7 @@ def get_events_remaining():
          'CountryCode']].to_json(
         orient="records", date_format="iso")
 
-    return events
+    return json.loads(events)
 
 
 def get_event_schedule(year: int):
@@ -34,14 +34,10 @@ def get_event_schedule(year: int):
     if len(events) == 0:
         return "[]"
 
-    print(events)
-
     events['CountryCode'] = events.apply(lambda x: add_country_code(x), axis=1)
     events = events[
         ['RoundNumber', 'Country', 'Location', 'OfficialEventName', 'EventDate', 'EventName', 'EventFormat',
          'CountryCode']].to_json(
         orient="records", date_format="iso")
 
-    print(events)
-
-    return events
+    return json.loads(events)
