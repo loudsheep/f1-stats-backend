@@ -8,6 +8,7 @@ from datetime import datetime
 
 import fastf1
 from fastf1.ergast import Ergast
+from api.seriallizers import DriverCanWinSerializer
 
 def get_gp_by_name(year: int, gpnumber: int)-> str:
     """
@@ -47,7 +48,7 @@ def calculate_remaining_points(season: int, gpnumber: int) -> int:
     """
     return get_season_events_points(season, gpnumber, 25,33)
 
-def calculate_who_can_win(driver_standings: Any, max_points: int, season: int, gpnumber: int) -> str:
+def calculate_who_can_win(driver_standings: Any, max_points: int, season: int, gpnumber: int) -> list[dict[str, str]]:
     """
     Calculates which drivers can still win the championship.
     """
@@ -73,9 +74,9 @@ def calculate_who_can_win(driver_standings: Any, max_points: int, season: int, g
         }
         results.append(driver_info)
 
-    return json.dumps(results)
+    return results
 
-def who_can_still_win() -> json:
+def who_can_still_win() -> list[dict[str, str]]:
     """
     Calculate championship contenders for the latest event
     """
@@ -88,7 +89,9 @@ def who_can_still_win() -> json:
     remaining_points = calculate_remaining_points(year_w, gp_w)
     result = calculate_who_can_win(driver_standings, remaining_points, year_w, gp_w)
 
-    return json.loads(result)
+    #Serializer implementation, because of Django
+    serializer = DriverCanWinSerializer(result, many=True)
+    return serializer.data
 
 if __name__ == "__main__":
     year = 2025
