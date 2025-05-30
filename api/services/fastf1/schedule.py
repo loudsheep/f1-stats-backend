@@ -15,26 +15,36 @@ def add_country_code(pd_row):
         return pycountry.countries.search_fuzzy(pd_row['Country'])[0].alpha_2
 
 
+def add_circuit_id(pd_row, ergast, season):
+    if pd_row['RoundNumber'] == 0:
+        return None
+    return ergast.get_circuits(season, pd_row['RoundNumber']).to_dict(orient="records")[0]['circuitId']
+
+
 def get_events_remaining():
     events = fastf1.get_events_remaining()
+    ergast = Ergast()
 
     events['CountryCode'] = events.apply(lambda x: add_country_code(x), axis=1)
-    events = events[
-        ['RoundNumber', 'Country', 'Location', 'OfficialEventName', 'EventDate', 'EventName', 'EventFormat',
-         'CountryCode']].to_json(orient="records", date_format="iso")
+    events['CircuitId'] = events.apply(lambda x: add_circuit_id(x, ergast, events.year), axis=1)
+    events['Season'] = events.apply(lambda x: events.year, axis=1)
+
+    events = events.to_json(orient="records", date_format="iso")
 
     return json.loads(events)
 
 
 def get_event_schedule(season: int):
     events = fastf1.get_event_schedule(season)
+    ergast = Ergast()
 
     if len(events) == 0:
         return []
 
     events['CountryCode'] = events.apply(lambda x: add_country_code(x), axis=1)
-    events = events[
-        ['RoundNumber', 'Country', 'Location', 'OfficialEventName', 'EventDate', 'EventName', 'EventFormat',
-         'CountryCode']].to_json(orient="records", date_format="iso")
+    events['CircuitId'] = events.apply(lambda x: add_circuit_id(x, ergast, events.year), axis=1)
+    events['Season'] = events.apply(lambda x: events.year, axis=1)
+
+    events = events.to_json(orient="records", date_format="iso")
 
     return json.loads(events)

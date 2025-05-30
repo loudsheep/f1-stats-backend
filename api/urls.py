@@ -8,5 +8,5 @@ urlpatterns = [
     path('standings/drivers/', drivers_standings, name="drivers.standings"),
     path('standings/constructors/', constructors_standings, name="drivers.constructors"),
     path('standings/who-can-win/', possible_winners, name="drivers.possible_winners"),
-    path('circuit/<str:circuit_id>/', circuit_info, name="circuit.info"),
+    path('circuit/<str:circuit_id>/<int:season>/<int:round>', circuit_info, name="circuit.info"),
 ]

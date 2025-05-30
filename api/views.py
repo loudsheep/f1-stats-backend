@@ -33,5 +33,5 @@ def possible_winners(request):
 
 
 @api_view(['GET'])
-def circuit_info(request, circuit_id):
-    return Response(get_circut_info(circut_id=circuit_id))
+def circuit_info(request, circuit_id, season, round):
+    return Response(get_circut_info(circuit_id, season, round))
