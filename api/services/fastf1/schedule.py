@@ -3,6 +3,7 @@ import os
 
 import fastf1
 import pycountry
+from fastf1.ergast import Ergast
 
 
 def add_country_code(pd_row):
