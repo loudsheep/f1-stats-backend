@@ -11,7 +11,7 @@ class DriverStandingSerializer(serializers.Serializer):
     """
     position = serializers.IntegerField()
     positionText = serializers.CharField()
-    points = serializers.FloatField()
+    points = serializers.IntegerField()
     wins = serializers.IntegerField()
     driverId = serializers.CharField()
     driverNumber = serializers.IntegerField()
@@ -32,7 +32,7 @@ class ConstructorStandingSerializer(serializers.Serializer):
     """
     position = serializers.CharField()
     positionText = serializers.CharField()
-    points = serializers.CharField()
+    points = serializers.IntegerField()
     wins = serializers.CharField()
     constructorId = serializers.CharField()
     constructorUrl = serializers.CharField()
