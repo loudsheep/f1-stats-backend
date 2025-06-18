@@ -19,7 +19,7 @@ def get_race_results(season: int, round: int):
 
 def get_session_results(season: int, round: int, session_name: str):
     session = fastf1.get_session(season, round, session_name)
-    session.load()
+    session.load(laps=False, telemetry=False, weather=False, messages=False)
 
     results = session.results
 
